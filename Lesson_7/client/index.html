@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div id="chat"></div>
+        <form action="http://192.168.0.219:8081/send_message">
+            Ник: <input type="text" name="username" />
+            <br>
+            Сообщение: <input type="text" name="message" />
+            <br>
+            <button>Отправить!</button>
+        </form>
+    </body>
+    <script>
+        function getChat() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.getElementById("chat").innerHTML = this.responseText;
+            }
+            xhttp.open("GET", "http://192.168.0.219:8081/getAll");
+            xhttp.send();
+        }
+        window.setInterval(() => {
+            getChat();
+        }, 1000);
+    </script>
+</html>
