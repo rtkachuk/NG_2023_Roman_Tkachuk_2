@@ -1,6 +1,7 @@
 from app import app, db
 from app.models import Messages
 from flask import request, redirect, make_response
+import json
 import datetime
 import sqlalchemy
 
@@ -22,4 +23,14 @@ def get_all():
         data += "{}: {} [{}]<br>".format(message.userName, message.message, message.messageDate)
     responce = make_response(data)
     responce.headers['Access-Control-Allow-Origin'] = '*'
+    return responce
+
+@app.route('/getAllJSON')
+def getAllJson():
+    messages = Messages.query.all()
+    jsonDict = {}
+    for message in messages:
+        jsonDict.update({"username": message.userName, "message": message.message, "date": str(message.messageDate)})
+    responce = make_response(json.dumps(jsonDict))
+    responce.headers['Content-Type'] = 'application/json'
     return responce
